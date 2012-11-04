@@ -1,0 +1,117 @@
+<!--
+  Web Worker Example - spawns a web worker on a separate thread
+  author: Chris Wood
+  date: April 2, 2012
+ -->
+<html>
+
+<head>
+  <title>
+    OOP in Javascript -- demonstrating information hiding
+  </title>
+  <script type="text/javascript">
+
+    // The Global Scope
+    function Foo() {
+      // Private Members
+      var privateVariable = "this is a private variable";
+      var privateFunction = function() {
+        return "a private function";
+      }
+
+      // Privileged Members
+      this.getPrivateVariable = function() {
+        return privateVariable;
+      };
+      this.setPrivateVariable = function(value) {
+        privateVariable = value;
+      }
+      this.callPrivateFunction = function() {
+        return privateFunction();
+      };
+
+      // Public Members
+      this.publicVariable = "this is a public variable!";
+      this.publicFunc = function() {
+        return "a public function";
+      };
+    }
+
+    Foo.prototype.b = 5;
+    Foo.prototype.bFunc = function() { return this.b; }
+
+    window.onload = init;
+
+    function init() {
+      var fooObject = new Foo();
+      var resultsElement = document.getElementById("resultsLabel");
+
+      resultsElement.innerHTML = "fooObject.publicVariable: " + fooObject.publicVariable + "<br>";
+      resultsElement.innerHTML += "fooObject.publicFunc(): " + fooObject.publicFunc() + "<br>";
+      resultsElement.innerHTML += "fooObject.getPrivateVariable(): " + fooObject.getPrivateVariable() + "<br>";
+      resultsElement.innerHTML += "fooObject.callPrivateFunction(): " + fooObject.callPrivateFunction() + "<br>";
+      resultsElement.innerHTML += "fooObject.privateVariable: " + (fooObject.privateVariable==undefined?'undefined':fooObject.privateVariable) + "<br>";
+      resultsElement.innerHTML += "fooObject.privateFunction(): " + (fooObject.privateFunction==undefined?'undefined':fooObject.privateFunction()) + "<br>";
+      resultsElement.innerHTML += "<br>";
+      resultsElement.innerHTML += "fooObject.setPrivateVariable('I can change you');<br>";
+      fooObject.setPrivateVariable('I can change you');
+      resultsElement.innerHTML += "fooObject.getPrivateVariable(): " + fooObject.getPrivateVariable() + "<br>";
+      resultsElement.innerHTML += "<br>";
+      resultsElement.innerHTML += "var fooObject2 = new Foo();<br>";
+      var fooObject2 = new Foo();
+      resultsElement.innerHTML += "fooObject2.getPrivateVariable(): " + fooObject2.getPrivateVariable() + "<br>";
+      resultsElement.innerHTML += "fooObject2.setPrivateVariable('interesting value');<br>";
+      fooObject2.setPrivateVariable('interesting value');
+      resultsElement.innerHTML += "fooObject2.getPrivateVariable(): " + fooObject2.getPrivateVariable() + "<br>";
+      resultsElement.innerHTML += "fooObject.getPrivateVariable(): " + fooObject.getPrivateVariable() + "<br>";
+      resultsElement.innerHTML += "fooObject.bFunc(): " + fooObject.bFunc() + "<br>";
+    }
+
+  </script>
+</head>
+
+<body onload="init()">
+  <form name="myForm">
+    OOP In Javascript<br><br>
+    This page briefly demonstrates how to hide information in javascript by using closures<br><br>
+    Foo Class:<br>
+    <textarea readonly="readonly" cols="60" rows="32">
+    // The Global Scope
+    function Foo() {
+      // Private Members
+      var privateVariable = "this is a private variable";
+      var privateFunction = function() {
+        return "a private function";
+      }
+
+      // Privileged Members
+      this.getPrivateVariable = function() {
+        return privateVariable;
+      };
+      this.setPrivateVariable = function(value) {
+        privateVariable = value;
+      }
+      this.callPrivateFunction = function() {
+        return privateFunction();
+      };
+
+      // Public Members
+      this.publicVariable = "this is a public variable!";
+      this.publicFunc = function() {
+        return "a public function";
+      };
+    }
+
+    Foo.prototype.b = 5;
+    Foo.prototype.bFunc = function() { return this.b; }
+
+    // Object Instantiation
+    var fooObject = new Foo();
+    </textarea>
+    <br><br>
+    Results:<br>
+    <label id="resultsLabel"></label>
+  </form>
+</body>
+
+</html>
